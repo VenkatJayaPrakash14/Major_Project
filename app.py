@@ -14,7 +14,7 @@ from soil_classifier import SoilClassifier
 from gemini_helper import GeminiHelper
 
 app = Flask(__name__)
-app.secret_key = "agricultural_analysis_platform_secret_key"
+app.secret_key = "Enter Your Api Key Here"  # Set a secret key for session management
 
 # Directory Configuration
 UPLOAD_FOLDER = './static/uploads'
