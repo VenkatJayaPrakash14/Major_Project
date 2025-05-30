@@ -1,0 +1,96 @@
+
+<!-- templates/recommend.html -->
+{% extends "base1.html" %}
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+        <i class="fas fa-microscope text-green-600 mr-3"></i>
+        Soil Parameters Analysis
+    </h1>
+    
+    <form action="/predict" method="post" class="glass-morphism rounded-xl p-8 hover-scale card-shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="nitrogen">
+                        <i class="fas fa-vial text-green-600 mr-2"></i>
+                        Nitrogen (N) Content
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="nitrogen" name="nitrogen" type="number" step="0.01" required
+                           placeholder="Enter nitrogen content (mg/kg)">
+                </div>
+                
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="phosphorus">
+                        <i class="fas fa-vial text-green-600 mr-2"></i>
+                        Phosphorus (P) Content
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="phosphorus" name="phosphorus" type="number" step="0.01" required
+                           placeholder="Enter phosphorus content (mg/kg)">
+                </div>
+                
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="potassium">
+                        <i class="fas fa-vial text-green-600 mr-2"></i>
+                        Potassium (K) Content
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="potassium" name="potassium" type="number" step="0.01" required
+                           placeholder="Enter potassium content (mg/kg)">
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="temperature">
+                        <i class="fas fa-thermometer-half text-green-600 mr-2"></i>
+                        Temperature
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="temperature" name="temperature" type="number" step="0.1" required
+                           placeholder="Enter temperature (°C)">
+                </div>
+                
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="humidity">
+                        <i class="fas fa-tint text-green-600 mr-2"></i>
+                        Humidity
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="humidity" name="humidity" type="number" step="0.1" required
+                           placeholder="Enter humidity (%)">
+                </div>
+                
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="ph">
+                        <i class="fas fa-flask text-green-600 mr-2"></i>
+                        pH Level
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="ph" name="ph" type="number" step="0.1" required
+                           placeholder="Enter pH level (0-14)">
+                </div>
+                
+                <div class="relative">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="rainfall">
+                        <i class="fas fa-cloud-rain text-green-600 mr-2"></i>
+                        Rainfall
+                    </label>
+                    <input class="input-field w-full p-2 rounded bg-transparent outline-none"
+                           id="rainfall" name="rainfall" type="number" step="0.1" required
+                           placeholder="Enter rainfall (mm)">
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-center mt-8">
+            <button class="bg-gradient text-white px-8 py-3 rounded-lg hover:opacity-90 transition duration-300 flex items-center shadow-lg" type="submit">
+                <i class="fas fa-search mr-2"></i>
+                Get Recommendations
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!-- templates/history.html -->
+{% extends 'base.html' %}
+
+{% block title %}Analysis History{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Analysis History</h1>
+    
+    {% if history %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in history %}
+                <div class="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                    <div class="aspect-w-16 aspect-h-9 overflow-hidden">
+                        <img src="{{ item.image_path }}" alt="Analysis result" class="w-full h-56 object-cover">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-medium text-gray-800">Analysis #{{ loop.index }}</h3>
+                            <span class="text-xs text-gray-500">{{ item.timestamp }}</span>
+                        </div>
+                        <div class="mb-3">
+                            <span class="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full">{{ item.detection_count }} detections</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            {% for class, count in item.classes.items() %}
+                                <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">{{ class }}: {{ count }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="/result/{{ item.timestamp }}" class="text-green-600 hover:text-green-800 text-sm font-medium">View details →</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <h3 class="mt-4 text-lg font-medium text-gray-700">No analysis history found</h3>
+            <p class="mt-2 text-gray-500">Upload and analyze an image to see results here.</p>
+            <a href="/" class="mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Go to Upload</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

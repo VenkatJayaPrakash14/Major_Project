@@ -1,0 +1,182 @@
+<!-- templates/result_detail.html -->
+{% extends 'base.html' %}
+
+{% block title %}Result Details{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Detection Results</h1>
+        <span class="text-sm text-gray-500">{{ timestamp }}</span>
+    </div>
+    
+    <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Image Section -->
+        <div class="w-full lg:w-1/2">
+            <div class="border rounded-lg overflow-hidden">
+                <img src="{{ image_path }}" alt="Analysis result" class="w-full h-auto">
+            </div>
+            
+            <!-- Detection Statistics -->
+            <div class="mt-6 grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Total Detections</h3>
+                    <p class="text-2xl font-bold text-gray-800">{{ results|length }}</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Class Count</h3>
+                    <p class="text-2xl font-bold text-gray-800" id="class-count">Calculating...</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Avg. Confidence</h3>
+                    <p class="text-2xl font-bold text-gray-800" id="avg-confidence">Calculating...</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-medium text-gray-500 mb-1">Max Confidence</h3>
+                    <p class="text-2xl font-bold text-gray-800" id="max-confidence">Calculating...</p>
+                </div>
+            </div>
+            
+            <!-- Visualization -->
+            <div class="mt-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-2">Class Distribution</h3>
+                <div class="h-64">
+                    <canvas id="distribution-chart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="w-full lg:w-1/2">
+            <h2 class="text-xl font-medium text-gray-800 mb-4">Detailed Detections</h2>
+            
+            <div class="border rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confidence</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coordinates</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for result in results %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ loop.index }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-sm font-medium bg-green-100 text-green-800 rounded-full">{{ result.class }}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <div class="flex items-center">
+                                        <div class="w-16 bg-gray-200 rounded-full h-2.5 mr-2">
+                                            <div class="bg-green-600 h-2.5 rounded-full" style="width: {{ result.confidence * 100 }}%"></div>
+                                        </div>
+                                        <span>{{ (result.confidence * 100)|round(1) }}%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    ({{ result.x1 }}, {{ result.y1 }}) - ({{ result.x2 }}, {{ result.y2 }})
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Export Options -->
+            <div class="mt-6">
+                <h3 class="text-lg font-medium text-gray-800 mb-2">Export Options</h3>
+                <div class="flex space-x-3">
+                    <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        CSV
+                    </button>
+                    <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        JSON
+                    </button>
+                    <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Image
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="mt-8 flex justify-between">
+                <a href="/history" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition">Back to History</a>
+                <a href="/" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">New Analysis</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Parse results data
+    const results = {{ results|tojson }};
+    
+    // Calculate statistics
+    const classMap = {};
+    let totalConfidence = 0;
+    let maxConfidence = 0;
+    
+    results.forEach(result => {
+        // Count classes
+        if (classMap[result.class]) {
+            classMap[result.class]++;
+        } else {
+            classMap[result.class] = 1;
+        }
+        
+        // Track confidence
+        totalConfidence += result.confidence;
+        maxConfidence = Math.max(maxConfidence, result.confidence);
+    });
+    
+    // Update statistics
+    document.getElementById('class-count').textContent = Object.keys(classMap).length;
+    document.getElementById('avg-confidence').textContent = (totalConfidence / results.length * 100).toFixed(1) + '%';
+    document.getElementById('max-confidence').textContent = (maxConfidence * 100).toFixed(1) + '%';
+    
+    // Create distribution chart
+    const classLabels = Object.keys(classMap);
+    const classCounts = Object.values(classMap);
+    
+    new Chart(document.getElementById('distribution-chart'), {
+        type: 'pie',
+        data: {
+            labels: classLabels,
+            datasets: [{
+                data: classCounts,
+                backgroundColor: [
+                    '#10B981', '#059669', '#047857', '#065F46', '#064E3B',
+                    '#064E3B', '#047857', '#059669', '#10B981', '#34D399'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

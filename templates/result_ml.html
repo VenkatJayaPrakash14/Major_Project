@@ -1,0 +1,62 @@
+{% extends "base1.html" %}
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
+        <i class="fas fa-leaf text-green-600 mr-3"></i>
+        Crop Analysis Results
+    </h1>
+    
+    <div class="space-y-8">
+        <!-- Recommended Crops Section -->
+        <div class="glass-morphism rounded-xl p-8 hover-scale card-shadow">
+            {% if crops %}
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold mb-6 text-gray-800">
+                        <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                        Recommended Crops
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for crop in crops %}
+                            <div class="bg-white p-4 rounded-lg shadow-sm">
+                                <i class="fas fa-seedling text-green-600 mb-2"></i>
+                                <h3 class="text-lg text-gray-700 font-medium">{{ crop }}</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-red-600 flex items-center justify-center">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    <p>No suitable crops found for the given parameters.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- AI Insights Section -->
+        {% if ai_insights %}
+        <div class="glass-morphism rounded-xl p-8 hover-scale card-shadow">
+            <h2 class="text-xl font-semibold mb-6 text-gray-800">
+                <i class="fas fa-brain text-green-600 mr-2"></i>
+                AI-Powered Insights
+            </h2>
+            <div class="prose prose-green max-w-none">
+                {{ ai_insights | safe }}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-center space-x-4">
+            <a href="/recommend" class="bg-gradient text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300 inline-flex items-center shadow-lg">
+                <i class="fas fa-redo mr-2"></i>
+                Try Different Parameters
+            </a>
+            
+            <button onclick="window.print()" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:opacity-90 transition duration-300 inline-flex items-center shadow-lg">
+                <i class="fas fa-print mr-2"></i>
+                Print Report
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

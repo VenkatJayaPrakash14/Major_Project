@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural Analysis Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #81c784;
+            --accent-color: #1b5e20;
+            --light-bg: #f1f8e9;
+            --dark-bg: #1b1b1b;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        
+        /* Navbar styles */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            padding: 15px 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-shrink {
+            padding: 8px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .navbar-brand:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link {
+            margin: 0 10px;
+            position: relative;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::before {
+            width: 100%;
+        }
+        
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            z-index: 10;
+            max-width: 800px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+        }
+        
+        .hero-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+        }
+        
+        .hero-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .hero-btn:hover::before {
+            width: 100%;
+        }
+        
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        
+        /* Cards section */
+        .card-section {
+            margin: -100px auto 60px;
+            position: relative;
+            z-index: 20;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-img-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .card:hover .card-img-overlay {
+            opacity: 1;
+        }
+        
+        .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .card:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        
+        .card-body {
+            padding: 25px;
+            position: relative;
+            z-index: 10;
+            background: white;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .card:hover .card-title::after {
+            width: 100%;
+        }
+        
+        .btn-card {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: var(--accent-color);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-card:hover::before {
+            width: 100%;
+        }
+        
+        .btn-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Features section */
+        .features-section {
+            padding: 100px 0;
+            background-color: white;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 40px 20px;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(135deg, var(--light-bg), #e8f5e9);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .feature-card:hover::before {
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            display: inline-block;
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotateY(360deg);
+        }
+        
+        .feature-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        /* Stats section */
+        .stats-section {
+            padding: 80px 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1471193945509-9ad0617afabf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+        }
+        
+        .counter {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .counter-text {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 80px 0 30px;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-text {
+            margin-bottom: 30px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--secondary-color);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Animations for scroll reveal */
+        .reveal {
+            position: relative;
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+        }
+        
+        .reveal-left {
+            transform: translateX(-100px);
+        }
+        
+        .reveal-right {
+            transform: translateX(100px);
+        }
+        
+        .reveal-top {
+            transform: translateY(-100px);
+        }
+        
+        .reveal-bottom {
+            transform: translateY(100px);
+        }
+        
+        .reveal.active {
+            transform: translateX(0) translateY(0);
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 99;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+        
+        /* Animated background particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            display: block;
+            background-color: rgba(255,255,255,0.8);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: particles 3s linear infinite;
+        }
+        
+        @keyframes particles {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: all 0.5s ease;
+        }
+        
+        .loader.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-icon {
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="loader-icon">
+            <i class="fas fa-seedling text-success fa-4x"></i>
+        </div>
+    </div>
+
+    <!-- Back to top button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand animate__animated animate__fadeInLeft" href="/">
+                <i class="fas fa-leaf me-2"></i>Agricultural Analysis Platform
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto animate__animated animate__fadeInRight">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/soil"><i class="fas fa-flask me-1"></i> Soil Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/corn"><i class="fas fa-seedling me-1"></i> Corn Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/history"><i class="fas fa-history me-1"></i> History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light ms-3 px-4" href="/login"><i class="fas fa-user me-1"></i> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="particles" id="particles"></div>
+        <div class="container">
+            <div class="hero-content animate__animated animate__fadeIn">
+                <h1 class="hero-title animate__animated animate__fadeInUp animate__delay-1s">Revolutionize Your Farming with AI Analysis</h1>
+                <p class="hero-text animate__animated animate__fadeInUp animate__delay-1s">Make data-driven decisions to optimize yields, reduce costs, and improve sustainability with our advanced agricultural analysis tools.</p>
+                <a href="#services" class="btn btn-success hero-btn animate__animated animate__fadeInUp animate__delay-2s">
+                    <i class="fas fa-arrow-right me-2"></i> Explore Our Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cards Section -->
+    <section class="card-section" id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 reveal reveal-left">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" class="card-img-top" alt="Soil Analysis">
+                        <div class="card-img-overlay d-flex align-items-end">
+                            <a href="/soil" class="text-white">
+                                <h5><i class="fas fa-arrow-right me-2"></i> Learn More</h5>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-flask me-2"></i> Soil Analysis</h5>
+                            <p class="card-text">Input your soil parameters to get intelligent crop recommendations based on machine learning algorithms tailored to your specific farm conditions.</p>
+                            <a href="/soil" class="btn btn-card">
+                                <span>Analyze Soil</span>
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 reveal">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" class="card-img-top" alt="Corn Seed Analysis">
+                        <div class="card-img-overlay d-flex align-items-end">
+                            <a href="/corn" class="text-white">
+                                <h5><i class="fas fa-arrow-right me-2"></i> Learn More</h5>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-seedling me-2"></i> Corn Seed Analysis</h5>
+                            <p class="card-text">Upload images of corn seeds to detect and analyze seed quality, defects, and characteristics using our advanced AI image recognition system.</p>
+                            <a href="/corn" class="btn btn-card">
+                                <span>Analyze Seeds</span>
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 reveal reveal-right">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80" class="card-img-top" alt="Historical Analysis">
+                        <div class="card-img-overlay d-flex align-items-end">
+                            <a href="/history" class="text-white">
+                                <h5><i class="fas fa-arrow-right me-2"></i> Learn More</h5>
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-chart-line me-2"></i> Historical Analysis</h5>
+                            <p class="card-text">Track your farm's performance over time with detailed historical analytics, identifying trends and optimizing future growing seasons.</p>
+                            <a href="/history" class="btn btn-card">
+                                <span>View History</span>
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title reveal">Our Powerful Features</h2>
+            <div class="row">
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <h3 class="feature-title">Data-Driven Decisions</h3>
+                        <p>Make informed farming decisions based on precise soil analysis and AI-powered recommendations to maximize your farm's potential.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="feature-title">Crop Optimization</h3>
+                        <p>Discover the best crops for your specific soil conditions to maximize yield and sustainability while reducing resource waste.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="feature-title">Seed Quality Analysis</h3>
+                        <p>Identify seed defects and quality issues before planting to improve germination rates and ensure healthy crop development.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-rain"></i>
+                        </div>
+                        <h3 class="feature-title">Weather Integration</h3>
+                        <p>Integrate local weather data with soil analysis to make timely decisions about irrigation, fertilization and crop protection.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile Access</h3>
+                        <p>Access your farm data anytime, anywhere with our responsive mobile interface and get real-time alerts and recommendations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal reveal-bottom">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Continuous Learning</h3>
+                        <p>Our AI models continuously improve based on seasonal data, ensuring increasingly accurate recommendations each growing season.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 reveal">
+                    <div class="counter" data-count="15000">0</div>
+                    <p class="counter-text">Farms Analyzed</p>
+                </div>
+                <div class="col-md-3 reveal">
+                    <div class="counter" data-count="25">0</div>
+                    <p class="counter-text">Supported Crops</p>
+                </div>
+                <div class="col-md-3 reveal">
+                    <div class="counter" data-count="96">0</div>
+                    <p class="counter-text">Accuracy Rate</p>
+                </div>
+                <div class="col-md-3 reveal">
+                    <div class="counter" data-count="28">0</div>
+                    <p class="counter-text">Countries Served</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5 bg-light">
+        <div class="container text-center reveal">
+            <h2 class="mb-4">Ready to Optimize Your Farm?</h2>
+            <p class="lead mb-4">Join thousands of farmers who are making data-driven decisions with our platform</p>
+            <a href="/register" class="btn btn-success btn-lg px-5 py-3 animate__animated animate__pulse animate__infinite">
+                <i class="fas fa-user-plus me-2"></i> Get Started For Free
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="footer-logo">
+                        <i class="fas fa-leaf me-2"></i> Agricultural Analysis
+                    </div>
+                    <p class="footer-text">A comprehensive platform for modern farming practices, helping farmers around the world make data-driven decisions.</p>
+                    <div class="social-icons">
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-3 fs-4"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h5 class="footer-title">Quick Links</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h5 class="footer-title">Services</h5>
+                    <ul class="footer-links">
+                        <li><a href="/soil">Soil Analysis</a></li>
+                        <li><a href="/corn">Seed Analysis</a></li>
+                        <li><a href="/history">History</a></li>
+                        <li><a href="/support">Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="footer-title">Subscribe to Our Newsletter</h5>
+                    <p class="mb-3">Get the latest agricultural insights and updates</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your Email" aria-label="Email" required>
+                            <button class="btn btn-success" type="submit">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Agricultural Analysis Platform. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Loader animation
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.querySelector('.loader').classList.add('fade-out');
+            }, 1000);
+        });
+        
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            const backToTop = document.querySelector('.back-to-top');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-shrink');
+                backToTop.classList.add('active');
+            } else {
+                navbar.classList.remove('navbar-shrink');
+                backToTop.classList.remove('active');
+            }
+            
+            revealOnScroll();
+        });
+        
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const revealTop = reveals[i].getBoundingClientRect().top;
+                const revealPoint = 150;
+                
+                if (revealTop < windowHeight - revealPoint) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (this.getAttribute('href') === '#') return;
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Counter animation
+        function animateCounter() {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-count');
+                const count = +counter.innerText;
+                const increment = target / speed;
+                
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment);
+                    setTimeout(animateCounter, 1);
+                } else {
+                    counter.innerText = target;
+                }
+            });
+        }
+        
+        // Trigger counter animation when stats section is in view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const stats = document.querySelector('.stats-section');
+        if (stats) {
+            statsObserver.observe(stats);
+        }
+        
+        // Create particle effects for hero section
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 5 + 2;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                
+                particle.style.left = posX + '%';
+                particle.style.top = posY + '%';
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.animationDelay = delay + 's';
+                
+                particles.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // Card hover effects
+        const cards = document.querySelectorAll('.card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.classList.add('animate__animated', 'animate__pulse');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.classList.remove('animate__animated', 'animate__pulse');
+            });
+        });
+        
+        // Feature card hover effects
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const icon = this.querySelector('.feature-icon');
+                icon.classList.add('animate__animated', 'animate__heartBeat');
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const icon = this.querySelector('.feature-icon');
+                icon.classList.remove('animate__animated', 'animate__heartBeat');
+            });
+        });
+        
+        // Navbar active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Weather data fetch simulation (for demo purposes)
+        function simulateWeatherFetch() {
+            // This is a simulation - in a real application, you would fetch actual weather data
+            const weatherConditions = ['Sunny', 'Partly Cloudy', 'Rainy', 'Overcast'];
+            const temperatures = [22, 25, 19, 28, 30];
+            
+            const randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+            const randomTemp = temperatures[Math.floor(Math.random() * temperatures.length)];
+            
+            // You would display this data somewhere in your UI
+            console.log(`Weather: ${randomWeather}, Temperature: ${randomTemp}°C`);
+        }
+        
+        // Call once on page load (for demo)
+        simulateWeatherFetch();
+        
+        // Animate elements on first load
+        window.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.querySelectorAll('.animate__animated').forEach(el => {
+                    const animationClass = Array.from(el.classList).find(cls => cls.startsWith('animate__') && cls !== 'animate__animated');
+                    if (animationClass && !animationClass.includes('animate__infinite')) {
+                        el.classList.add('animate__' + animationClass.split('animate__')[1]);
+                    }
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
